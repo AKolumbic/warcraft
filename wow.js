@@ -135,7 +135,7 @@ const teamBuilder = (factionRaces, teamSize, bracket) => {
     teamScore= teamScore + lvl
   }
 
-  return { teamLvl, roster }
+  return { teamScore, roster }
 }
 
 
