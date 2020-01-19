@@ -23,6 +23,16 @@ const getRandom = (inputArr) => {
 }
 
 
+const tieBreaker = () => {
+  /**
+   * 50/50 decider between horde and alliance if they have same score
+   */
+  const rng = random(1, 100)
+  const even = rng % 2 === 0
+  even ? 'HORDE' : 'ALLIANCE'
+}
+
+
 const getWinner = (hordeScore, allianceScore) => {
   /**
    * accepts faction team scores to determine the winner of battle. Note that order matters for the params.
@@ -31,13 +41,25 @@ const getWinner = (hordeScore, allianceScore) => {
    */
   let winner
   let victoryText
+  let hordeVictory = hordeScore > allianceScore
+  let allianceVictory = allianceScore > hordeScore
+  const tie = hordeScore === allianceScore
 
-  if (hordeScore > allianceScore) { 
+  if (tie) {
+    const coinFlip = tieBreaker()
+
+    if(coinFlip === 'HORDE') {
+      hordeVictory = true
+    } else if (coinFlip === 'ALLIANCE') {
+      allianceVictory = true
+    }
+
+  } else if (hordeVictory) { 
     winner = 'HORDE'
-    victoryText = 'FOR THE HORDE, LOKTAR OGAR!'
-  } else if (allianceScore > hordeScore) {
+    victoryText = 'FOR THE HORDE! LOKTAR OGAR!'
+  } else if (allianceVictory) {
     winner = 'ALLIANCE'
-    victoryText = 'FOR THE ALLIANCE'
+    victoryText = 'FOR THE ALLIANCE!'
   }
 
   return { winner, victoryText }
@@ -95,7 +117,8 @@ const bgLvlBracket = [
   [41, 42, 43, 44, 45, 46, 47, 48, 49, 50],
   [51, 52, 53, 54, 55, 56, 57, 58, 59, 60],
   [61, 62, 63, 64, 65, 66, 67, 68, 69, 70],
-  [71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
+  [71, 72, 73, 74, 75, 76, 77, 78, 79],
+  [80]
 ]
 
 const maxLvlBracket = bgLvlBracket[bgLvlBracket.length - 1]
@@ -124,8 +147,13 @@ const battlegrounds = [
   {
     name: 'The Strand of the Ancients',
     size: 15,
-    lvlBracket: maxLvlBracket
-  }
+    lvlBracket: getRandom([bgLvlBracket[6], maxLvlBracket])
+  },
+  // {
+  //   name: 'DEV TEST',
+  //   size: 5,
+  //   lvlBracket: maxLvlBracket
+  // }
 ]
 
 
@@ -180,8 +208,6 @@ const wow = () => {
     console.log(`${winner.winner} wins the battle!`)
     await dramaticPause()
     console.log(winner.victoryText)
-    await dramaticPause()
-    await dramaticPause()
     await dramaticPause()
     await dramaticPause()
     console.log('Battle Data')
