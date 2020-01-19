@@ -3,6 +3,7 @@
 
 // gets a random number between minimum and maximum input parameters
 const random = (min, max) => {
+  // I needed to google this to figure out how to do it. Learn to love google.
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random#Getting_a_random_number_between_two_values
   return Math.floor(Math.random() * (max - min)) + min
 }
@@ -15,7 +16,7 @@ const dramaticPause = () => {
 }
 
 
-// takes an array as input parameter, and selections a random element from it
+// takes an array as input parameter, and selects a random element from it
 const randomArraySelection = (inputArr) => {
   // since arrays are zero-indexed, the length of the array minus 1 gives you the last index
   const max = inputArr.length - 1
@@ -27,23 +28,26 @@ const randomArraySelection = (inputArr) => {
 
 
 // Someone's gotta win, right?
-getWinner = (hordeScore, allianceScore) => {
-  let winner // good usage of let
+getWinner = (hordeScore, allianceScore) => { // note if alliance score gets passed first, the parameters are incorrect as written, but for this demo its fine
+  let winner // good usages of let
   let victoryText
 
-  if (hordeScore > allianceScore) {
+  // if horde wins then make stuff horde related
+  if (hordeScore > allianceScore) { 
     winner = 'HORDE'
-    victoryText = 'FOR THE HORDE'
+    victoryText = 'FOR THE HORDE, LOKTAR OGAR!'
+  // if alliance wins, do the opposite
   } else if (allianceScore > hordeScore) {
     winner = 'ALLIANCE'
     victoryText = 'FOR THE ALLIANCE'
   }
 
+  // return the winner data
   return { winner, victoryText }
 }
 
 
-// 2D array
+// 2D array for battleground level brackets
 const bgLvlBracket = [
   [15, 16, 17, 18, 19, 20],
   [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
@@ -54,9 +58,13 @@ const bgLvlBracket = [
   [71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
 ]
 
+
+// Can you explain what this is?
 const maxLvlBracket = bgLvlBracket[bgLvlBracket.length - 1]
 
+
 // the kind of more complex array you'd see in real life
+// an array of objects, with a nested array (lvlBracket)
 const battlegrounds = [
   {
     name: 'Warsong Gulch',
@@ -86,9 +94,15 @@ const battlegrounds = [
 ]
 
 
+
+
+// builds a team of characters
 const teamBuilder = (factionRaces, teamSize, bracket) => {
-  let teamLvl = 0
+  // init score as 0, use let because the number mutates
+  let teamScore= 0
+  // init as an empty array, doesn't need to be let because the array exists as a constant, it's content is what changes. 
   const roster = []
+  // Character class array
   const classes = [
     'Druid',
     'Mage',
@@ -101,21 +115,28 @@ const teamBuilder = (factionRaces, teamSize, bracket) => {
     'Shaman'
   ]
 
+
+  // loops the same amount as the size of the team, building a character each iteration
   for (let index=0; index < teamSize; index++) {
+    // randomly pick level in range of the level bracket
     const lvl = randomArraySelection(bracket)
+    // randomly pick a race from the correct faction
     const race = randomArraySelection(factionRaces)
+    // randomly select 
     const characterClass = randomArraySelection(classes)
+
+    // the character is a string, oppossed to an object, because its simpler
     const teamMember = `Level ${lvl} ${race} ${characterClass}`
+
+    // add character to roster
     roster.push(teamMember)
-    teamLvl = teamLvl + lvl
+
+    // update team score with players level
+    teamScore= teamScore + lvl
   }
 
   return { teamLvl, roster }
 }
-
-
-
-
 
 
 
@@ -146,35 +167,36 @@ const wow = () => {
   const alliance = teamBuilder(allianceRaces, teamSize, bracket)
 
 
-  const winner = getWinner(horde.teamLvl, alliance.teamLvl)
+  const winner = getWinner(horde.teamScore, alliance.teamScore)
   const battleData = {
     Battleground: battleground.name,
     Winner: winner.winner,
     Bracket: `${bracket[0]} - ${bracket[bracket.length - 1]}`,
     Armies: {
-      ['Horde Score']: horde.teamLvl,
+      ['Horde Score']: horde.teamScore,
       ['Horde Team']: horde.roster,
-      ['Alliance Score']: alliance.teamLvl,
+      ['Alliance Score']: alliance.teamScore,
       ['Alliance Team']: alliance.roster,
     }
   }
 
-  console.log('Battle Data', battleData)
-
-  // const logBattleText = async () => {
-  //   await dramaticPause()
-  //   console.log(' < - WARCRAFT - >')
-  //   console.log(`At dawn, the Horde and Alliance met at ${battleground.name} to do battle...`)
-  //   await dramaticPause()
-  //   console.log('..and the winner is..')
-  //   await dramaticPause()
-  //   console.log(`THE ${winner.winner}!!!`)
-  //   console.log(winner.victoryText)
-  //   await dramaticPause()
-  //   console.log(battleData)
-  //   await dramaticPause()
-  // }
-  // logBattleText()
+  const logBattleText = async () => {
+    await dramaticPause()
+    console.log(' < - WARCRAFT - >')
+    await dramaticPause()
+    console.log(`At dawn, the Horde and Alliance met at ${battleground.name} to do battle...`)
+    await dramaticPause()
+    console.log(`${winner.winner} wins the battle!`)
+    await dramaticPause()
+    console.log(winner.victoryText)
+    await dramaticPause()
+    await dramaticPause()
+    await dramaticPause()
+    console.log('Battle Data')
+    console.log(battleData)
+    await dramaticPause()
+  }
+  logBattleText()
 
   return battleData
 }
