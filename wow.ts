@@ -1,7 +1,9 @@
 // World of Warcraft themed examples of JavaScript
 
 
-const random = (min, max) => {
+
+
+const random = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min)) + min
 }
 
@@ -11,14 +13,14 @@ const dramaticPause = () => {
 }
 
 
-const randomArraySelection = (inputArr) => {
+const randomArraySelection = (inputArr: Array<any>) => {
   const max = inputArr.length - 1
   const rng = random(0, max)
   return inputArr[rng]
 }
 
 
-const getWinner = (hordeScore, allianceScore) => {
+const getWinner = (hordeScore: number, allianceScore: number) => {
   let winner
   let victoryText
 
@@ -78,7 +80,11 @@ const battlegrounds = [
 
 
 
-const teamBuilder = (factionRaces, teamSize, bracket) => {
+const teamBuilder = (
+  factionRaces: string[],
+  teamSize: number,
+  bracket: number[]
+) => {
   let teamScore= 0
   const roster = []
   const classes = [
