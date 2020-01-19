@@ -107,15 +107,6 @@ const getWinner = (hordeScore, allianceScore) => {
 
 
 
-const dramaticPause = () => {
-  /**
-   * line break for logBattleText function
-   */
-  console.log('\n')
-}
-
-
-
 const chooseBattleGround = () => {
   /**
    * 
