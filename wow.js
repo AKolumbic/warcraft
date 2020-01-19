@@ -39,11 +39,11 @@ const getWinner = (hordeScore, allianceScore) => {
    * @param hordeScore - all horde team character levels added together
    * @param allianceScore - all alliance team character levels added together
    */
-  let winner
-  let victoryText
+  const tie = hordeScore === allianceScore
   let hordeVictory = hordeScore > allianceScore
   let allianceVictory = allianceScore > hordeScore
-  const tie = hordeScore === allianceScore
+  let winner
+  let victoryText
 
   if (tie) {
     const coinFlip = tieBreaker()
@@ -53,8 +53,9 @@ const getWinner = (hordeScore, allianceScore) => {
     } else if (coinFlip === 'ALLIANCE') {
       allianceVictory = true
     }
-
-  } else if (hordeVictory) { 
+  } 
+  
+  if (hordeVictory) { 
     winner = 'HORDE'
     victoryText = 'FOR THE HORDE! LOKTAR OGAR!'
   } else if (allianceVictory) {
@@ -93,7 +94,7 @@ const teamBuilder = (factionRaces, teamSize, bracket) => {
     const characterClass = getRandom(classes)
     const teamMember = `Level ${lvl} ${race} ${characterClass}`
 
-    teamScore= teamScore + lvl
+    teamScore = teamScore + lvl
     roster.push(teamMember)
   }
 
