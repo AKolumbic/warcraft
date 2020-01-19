@@ -1,53 +1,49 @@
 // World of Warcraft themed examples of JavaScript
 
 
+// gets a random number between minimum and maximum input parameters
 const random = (min, max) => {
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random#Getting_a_random_number_between_two_values
   return Math.floor(Math.random() * (max - min)) + min
 }
 
 
+// line break in the console. Not actually a pause in any way
 const dramaticPause = () => {
-  // setTimeout(console.log('\n'), 2500)
+  // note that it's just logging, and not returning anything. Returning would terminate the program the way its used in logBattleText
   console.log('\n')
 }
 
 
+// takes an array as input parameter, and selections a random element from it
 const randomArraySelection = (inputArr) => {
+  // since arrays are zero-indexed, the length of the array minus 1 gives you the last index
   const max = inputArr.length - 1
+  // random number no bigger than the length of the array, to be used as index
   const rng = random(0, max)
+  // rng is now the index position in the input array, causing the 'selection'
   return inputArr[rng]
 }
 
 
+// Someone's gotta win, right?
 getWinner = (hordeScore, allianceScore) => {
-  let winner
+  let winner // good usage of let
+  let victoryText
 
   if (hordeScore > allianceScore) {
     winner = 'HORDE'
-  }
-  if (allianceScore > hordeScore) {
-    winner = 'ALLIANCE'
-  }
-
-  return winner
-}
-
-
-const getVictoryText = (winner) => {
-  let victoryText
-
-  if (winner === 'HORDE') {
     victoryText = 'FOR THE HORDE'
-  }
-
-  if (winner === 'ALLIANCE') {
+  } else if (allianceScore > hordeScore) {
+    winner = 'ALLIANCE'
     victoryText = 'FOR THE ALLIANCE'
   }
 
-  return victoryText
+  return { winner, victoryText }
 }
 
 
+// 2D array
 const bgLvlBracket = [
   [15, 16, 17, 18, 19, 20],
   [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
@@ -60,6 +56,7 @@ const bgLvlBracket = [
 
 const maxLvlBracket = bgLvlBracket[bgLvlBracket.length - 1]
 
+// the kind of more complex array you'd see in real life
 const battlegrounds = [
   {
     name: 'Warsong Gulch',
@@ -92,7 +89,7 @@ const battlegrounds = [
 const teamBuilder = (factionRaces, teamSize, bracket) => {
   let teamLvl = 0
   const roster = []
-  classes = [
+  const classes = [
     'Druid',
     'Mage',
     'Paladin',
@@ -150,10 +147,9 @@ const wow = () => {
 
 
   const winner = getWinner(horde.teamLvl, alliance.teamLvl)
-  const victoryText = getVictoryText(winner)
   const battleData = {
     Battleground: battleground.name,
-    Winner: winner,
+    Winner: winner.winner,
     Bracket: `${bracket[0]} - ${bracket[bracket.length - 1]}`,
     Armies: {
       ['Horde Score']: horde.teamLvl,
@@ -163,21 +159,22 @@ const wow = () => {
     }
   }
 
+  console.log('Battle Data', battleData)
 
-  const logBattleText = async () => {
-    await dramaticPause()
-    console.log(' < - WARCRAFT - >')
-    await dramaticPause()
-    console.log(`At dawn, the Horde and Alliance met at ${battleground.name} to do battle...`)
-    await dramaticPause()
-    console.log('..and the winner is..')
-    await dramaticPause()
-    console.log(`THE ${winner}!!!`)
-    console.log(victoryText)
-    await dramaticPause()
-    console.log(battleData)
-  }
-  logBattleText()
+  // const logBattleText = async () => {
+  //   await dramaticPause()
+  //   console.log(' < - WARCRAFT - >')
+  //   console.log(`At dawn, the Horde and Alliance met at ${battleground.name} to do battle...`)
+  //   await dramaticPause()
+  //   console.log('..and the winner is..')
+  //   await dramaticPause()
+  //   console.log(`THE ${winner.winner}!!!`)
+  //   console.log(winner.victoryText)
+  //   await dramaticPause()
+  //   console.log(battleData)
+  //   await dramaticPause()
+  // }
+  // logBattleText()
 
   return battleData
 }
