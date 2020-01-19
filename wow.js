@@ -67,7 +67,7 @@ const tieBreaker = () => {
    */
   const rng = random(1, 100)
   const even = rng % 2 === 0
-  even ? 'HORDE' : 'ALLIANCE'
+  return even ? 'HORDE' : 'ALLIANCE'
 }
 
 
@@ -109,7 +109,7 @@ const getWinner = (hordeScore, allianceScore) => {
 
 const chooseBattleGround = () => {
   /**
-   * 
+   * Determines battleground, and level bracket
    */
   const bgLvlBracket = [
     [15, 16, 17, 18, 19, 20],
@@ -159,7 +159,7 @@ const chooseBattleGround = () => {
 
 const battle = () => {
   /**
-   * 
+   * picks battlefield, assembles armies, and declares a winner before putting the data together and returning it
    */
   const battleground = chooseBattleGround()
   const teamSize = battleground.size
