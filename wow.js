@@ -1,17 +1,22 @@
 // World of Warcraft themed examples of JavaScript
 
 
+
 const random = (min, max) => {
+  /**
+   * returns a random number between minimum and maximum range
+   * @param min - minimum allowed value
+   * @param max - maximum allowed value
+   */
   return Math.floor(Math.random() * (max - min)) + min
 }
 
 
-const dramaticPause = () => {
-  console.log('\n')
-}
-
-
-const randomArraySelection = (inputArr) => {
+const getRandom = (inputArr) => {
+  /**
+   * randomly selects a number to be used as an index position to make a random selection from the array parameter
+   * @param inputArr - array that requires a random element selected from it
+   */
   const max = inputArr.length - 1
   const rng = random(0, max)
   return inputArr[rng]
@@ -19,6 +24,11 @@ const randomArraySelection = (inputArr) => {
 
 
 const getWinner = (hordeScore, allianceScore) => {
+  /**
+   * accepts faction team scores to determine the winner of battle. Note that order matters for the params.
+   * @param hordeScore - all horde team character levels added together
+   * @param allianceScore - all alliance team character levels added together
+   */
   let winner
   let victoryText
 
@@ -31,6 +41,49 @@ const getWinner = (hordeScore, allianceScore) => {
   }
 
   return { winner, victoryText }
+}
+
+
+const teamBuilder = (factionRaces, teamSize, bracket) => {
+  /**
+   * 
+   * @param factionRaces - an array of the faction's races
+   * @param teamSize - the amount of characters on a team, determined by battleground
+   * @param bracket - the bracket that determines character level
+   */
+  let teamScore= 0
+  const roster = []
+  const classes = [
+    'Druid',
+    'Mage',
+    'Paladin',
+    'Rogue',
+    'Hunter',
+    'Warrior',
+    'Warlock',
+    'Priest',
+    'Shaman'
+  ]
+
+  for (let index=0; index < teamSize; index++) {
+    const lvl = getRandom(bracket)
+    const race = getRandom(factionRaces)
+    const characterClass = getRandom(classes)
+    const teamMember = `Level ${lvl} ${race} ${characterClass}`
+
+    teamScore= teamScore + lvl
+    roster.push(teamMember)
+  }
+
+  return { teamScore, roster }
+}
+
+
+const dramaticPause = () => {
+  /**
+   * line break for logBattleText function
+   */
+  console.log('\n')
 }
 
 
@@ -51,22 +104,22 @@ const battlegrounds = [
   {
     name: 'Warsong Gulch',
     size: 10,
-    lvlBracket: randomArraySelection([bgLvlBracket[0], maxLvlBracket])
+    lvlBracket: getRandom([bgLvlBracket[0], maxLvlBracket])
   },
   {
     name: 'Arathi Basin',
     size: 12,
-    lvlBracket: randomArraySelection([bgLvlBracket[1], maxLvlBracket])
+    lvlBracket: getRandom([bgLvlBracket[1], maxLvlBracket])
   },
   {
     name: 'Alterac Valley',
     size: 40,
-    lvlBracket: randomArraySelection([bgLvlBracket[2], maxLvlBracket])
+    lvlBracket: getRandom([bgLvlBracket[2], maxLvlBracket])
   },
   {
     name: 'The Eye of the Storm',
     size: 15,
-    lvlBracket: randomArraySelection([bgLvlBracket[5], maxLvlBracket])
+    lvlBracket: getRandom([bgLvlBracket[5], maxLvlBracket])
   },
   {
     name: 'The Strand of the Ancients',
@@ -78,38 +131,8 @@ const battlegrounds = [
 
 
 
-const teamBuilder = (factionRaces, teamSize, bracket) => {
-  let teamScore= 0
-  const roster = []
-  const classes = [
-    'Druid',
-    'Mage',
-    'Paladin',
-    'Rogue',
-    'Hunter',
-    'Warrior',
-    'Warlock',
-    'Priest',
-    'Shaman'
-  ]
-
-  for (let index=0; index < teamSize; index++) {
-    const lvl = randomArraySelection(bracket)
-    const race = randomArraySelection(factionRaces)
-    const characterClass = randomArraySelection(classes)
-    const teamMember = `Level ${lvl} ${race} ${characterClass}`
-
-    teamScore= teamScore + lvl
-    roster.push(teamMember)
-  }
-
-  return { teamScore, roster }
-}
-
-
-
 const wow = () => {
-  const battleground = randomArraySelection(battlegrounds)
+  const battleground = getRandom(battlegrounds)
   const teamSize = battleground.size
   const bracket = battleground.lvlBracket
 
