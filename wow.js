@@ -15,7 +15,8 @@ const random = (min, max) => {
 
 const getRandom = (inputArr) => {
   /**
-   * randomly selects a number to be used as an index position to make a random selection from the array parameter
+   * randomly selects a number to be used as an index position to make 
+   * a random selection from the array parameter
    * @param inputArr - array that requires a random element selected from it
    */
   const max = inputArr.length - 1
@@ -74,7 +75,8 @@ const tieBreaker = () => {
 
 const getWinner = (hordeScore, allianceScore) => {
   /**
-   * accepts faction team scores to determine the winner of battle. Note that order matters for the params.
+   * accepts faction team scores to determine the winner of battle. 
+   * Note that order matters for the params.
    * @param hordeScore - all horde team character levels added together
    * @param allianceScore - all alliance team character levels added together
    */
@@ -159,7 +161,8 @@ const chooseBattleground = () => {
 
 const battle = () => {
   /**
-   * picks battlefield, assembles armies, and declares a winner before putting the data together and returning it
+   * picks battlefield, assembles armies, and declares a winner before 
+   * putting the data together and returning it
    */
   const battleground = chooseBattleground()
   const teamSize = battleground.size
@@ -194,7 +197,7 @@ const battle = () => {
     Winner: winner.winner,
     VictoryText: winner.victoryText,
     Bracket: `${bracket[0]} - ${bracket[bracket.length - 1]}`,
-    Armies: {
+    Teams: {
       ['Horde Score']: horde.teamScore,
       ['Horde Team']: horde.roster,
       ['Alliance Score']: alliance.teamScore,
@@ -220,7 +223,7 @@ const logBattle = (battleData) => {
   console.log('\n')
 
   console.log('\n')
-  console.log('Battle Data')
+  console.log(' < - Battle Data - > ')
   console.log(battleData)
   console.log('\n')
 }
