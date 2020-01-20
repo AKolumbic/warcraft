@@ -44,7 +44,8 @@ const teamBuilder = (factionRaces, teamSize, bracket) => {
     'Warrior',
     'Warlock',
     'Priest',
-    'Shaman'
+    'Shaman',
+    'Death Knight'
   ]
 
   for (let index=0; index < teamSize; index++) {
@@ -174,8 +175,7 @@ const battle = () => {
     'Troll',
     'Tauren',
     'Undead',
-    'Blood Elf',
-    'Goblin'
+    'Blood Elf'
   ]
   const horde = teamBuilder(hordeRaces, teamSize, bracket)
 
@@ -184,8 +184,7 @@ const battle = () => {
     'Dwarf',
     'Gnome',
     'Night Elf',
-    'Daenai',
-    'Worgen'
+    'Daenai'
   ]
   const alliance = teamBuilder(allianceRaces, teamSize, bracket)
 
