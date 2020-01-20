@@ -107,7 +107,7 @@ const getWinner = (hordeScore, allianceScore) => {
 
 
 
-const chooseBattleGround = () => {
+const chooseBattleground = () => {
   /**
    * Determines battleground, and level bracket
    */
@@ -161,7 +161,7 @@ const battle = () => {
   /**
    * picks battlefield, assembles armies, and declares a winner before putting the data together and returning it
    */
-  const battleground = chooseBattleGround()
+  const battleground = chooseBattleground()
   const teamSize = battleground.size
   const bracket = battleground.lvlBracket
 
