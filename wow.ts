@@ -2,23 +2,22 @@
 
 
 
-const random = (min, max) => {
-  /**
-   * returns a random number between minimum and maximum range
-   * @param min - minimum allowed value
-   * @param max - maximum allowed value
-   */
+/**
+ * Returns a random number between minimum and maximum range.
+ * @param min - minimum value
+ * @param max - maximum value
+ */
+const random = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min)) + min
 }
 
 
 
-const getRandom = (inputArr) => {
-  /**
-   * randomly selects a number to be used as an index position to make 
-   * a random selection from the array parameter
-   * @param inputArr - array that requires a random element selected from it
-   */
+/**
+ * Makes a random selection from inputed array.
+ * @param inputArr - any type of array
+ */
+const getRandom = (inputArr: any[]) => {
   const max = inputArr.length - 1
   const rng = random(0, max)
   return inputArr[rng]
@@ -26,15 +25,20 @@ const getRandom = (inputArr) => {
 
 
 
-const teamBuilder = (factionRaces, teamSize, bracket) => {
-  /**
-   * builds a character and adds them to the roster as many times as the team size
-   * @param factionRaces - an array of the faction's races
-   * @param teamSize - the amount of characters on a team, determined by battleground
-   * @param bracket - the bracket that determines character level
-   */
+/**
+ * Builds a character and adds them to the roster.
+ * Each character's lvl is added together to get the team score.
+ * @param factionRaces - an array of the faction's races
+ * @param teamSize - the amount of characters on a team, determined by battleground
+ * @param bracket - array of character levels
+ */
+const teamBuilder = (
+  factionRaces: string[],
+  teamSize: number,
+  bracket: number[]
+) => {
   let teamScore= 0
-  const roster = []
+  const roster: string[] = []
   const classes = [
     'Druid',
     'Mage',
@@ -49,9 +53,9 @@ const teamBuilder = (factionRaces, teamSize, bracket) => {
   ]
 
   for (let index=0; index < teamSize; index++) {
-    const lvl = getRandom(bracket)
-    const race = getRandom(factionRaces)
-    const characterClass = getRandom(classes)
+    const lvl: number = getRandom(bracket)
+    const race: string = getRandom(factionRaces)
+    const characterClass: string = getRandom(classes)
     const teamMember = `Level ${lvl} ${race} ${characterClass}`
 
     teamScore = teamScore + lvl
@@ -63,10 +67,10 @@ const teamBuilder = (factionRaces, teamSize, bracket) => {
 
 
 
+/**
+ * 50/50 between horde and alliance in case of a tie.
+ */
 const tieBreaker = () => {
-  /**
-   * 50/50 decider between horde and alliance if they have same score
-   */
   const rng = random(1, 100)
   const even = rng % 2 === 0
   return even ? 'HORDE' : 'ALLIANCE'
@@ -74,18 +78,18 @@ const tieBreaker = () => {
 
 
 
-const getWinner = (hordeScore, allianceScore) => {
-  /**
-   * accepts faction team scores to determine the winner of battle. 
-   * Note that order matters for the params.
-   * @param hordeScore - all horde team character levels added together
-   * @param allianceScore - all alliance team character levels added together
-   */
+/**
+ * Compares faction team scores to determine the winner of battle. 
+ * Note that order matters for the params.
+ * @param hordeScore - Horde team character levels added together
+ * @param allianceScore - Alliance team character levels added together
+ */
+const getWinner = (hordeScore: number, allianceScore: number) => {
   const tie = hordeScore === allianceScore
   let hordeVictory = hordeScore > allianceScore
   let allianceVictory = allianceScore > hordeScore
-  let winner
-  let victoryText
+  let winner: string
+  let victoryText: string
 
   if (tie) {
     const coinFlip = tieBreaker()
@@ -110,10 +114,16 @@ const getWinner = (hordeScore, allianceScore) => {
 
 
 
+/**
+ * Randomly selects battleground, team size, and level bracket
+ */
 const chooseBattleground = () => {
-  /**
-   * Determines battleground, and level bracket
-   */
+  interface BattlegroundTypes {
+    name: string;
+    size: number;
+    lvlBracket: number[];
+  }
+
   const bgLvlBracket = [
     [15, 16, 17, 18, 19, 20],
     [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
@@ -130,7 +140,7 @@ const chooseBattleground = () => {
     {
       name: 'Warsong Gulch',
       size: 10,
-      lvlBracket: getRandom([bgLvlBracket[0], maxLvlBracket])
+      lvlBracket: getRandom(bgLvlBracket)
     },
     {
       name: 'Arathi Basin',
@@ -153,22 +163,20 @@ const chooseBattleground = () => {
       lvlBracket: getRandom([bgLvlBracket[6], maxLvlBracket])
     }
   ]
-  const battleground = getRandom(battlegrounds)
+  const battleground: BattlegroundTypes = getRandom(battlegrounds)
 
   return battleground
 }
 
 
 
+/**
+ * Wrath of the Lich King era battleground simulator
+ */
 const battle = () => {
-  /**
-   * picks battlefield, assembles armies, and declares a winner before 
-   * putting the data together and returning it
-   */
   const battleground = chooseBattleground()
   const teamSize = battleground.size
   const bracket = battleground.lvlBracket
-
 
   const hordeRaces = [
     'Orc',
@@ -207,7 +215,35 @@ const battle = () => {
   return battleData
 }
 
-const logBattle = (battleData) => {
+
+
+/**
+ * - Battleground Name
+ * - Winner
+ * - Victory Text
+ * - Bracket
+ * - Teams
+ */
+interface BattleDataTypes {
+  Battleground: string;
+  Winner: string;
+  VictoryText: string;
+  Bracket: string;
+  Teams: {
+      ['Horde Score']: number;
+      ['Horde Team']: string[];
+      ['Alliance Score']: number;
+      ['Alliance Team']: string[];
+  };
+}
+
+
+
+/**
+ * logs the battle with flavor text
+ * @param battleData data from the battleground simulator
+ */
+const logBattle = (battleData: BattleDataTypes) => {
   console.log('\n')
   console.log(' < - WARCRAFT - >')
   console.log('\n')
@@ -228,9 +264,9 @@ const logBattle = (battleData) => {
 }
 
 
+
+
 const wow = () => {
   const battleData = battle()
   logBattle(battleData)
 }
-
-wow()
